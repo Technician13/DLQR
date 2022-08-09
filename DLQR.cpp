@@ -21,6 +21,9 @@ DLQR::DLQR(Eigen::MatrixXd A, Eigen::MatrixXd B,
     dim_control = dim_control_;
     T = T_;
 
+    Q.resize(dim_state, dim_state);
+    R.resize(dim_control, dim_control);
+
     /* error checking */
     if((A.rows()) != dim_state)
         std::cout << "A is in wrong rows !!!" << std::endl; 
@@ -63,4 +66,63 @@ DLQR::DLQR(Eigen::MatrixXd A, Eigen::MatrixXd B,
 DLQR::~DLQR()
 {
     std::cout << "DLQR Die ..." << std::endl;
+}
+
+void DLQR::DLQRInit()
+{
+    /* ************************************ option start ************************************ */
+    /* Q init */
+    Q << 100.0, 0.0,
+         0.0, 100.0;
+    #ifdef DLQR_TEST_PRINT_Q
+        std::cout << "----------------------------------------- Q -----------------------------------------" << std::endl;
+        PrintMatrix(Q);
+    #endif
+
+    /* R init */
+    R << 100.0;
+    #ifdef DLQR_TEST_PRINT_R
+        std::cout << "----------------------------------------- R -----------------------------------------" << std::endl;
+        PrintMatrix(R);
+    #endif
+    /* ************************************ option end ************************************ */
+}
+
+void DLQR::DLQRRun()
+{
+    Eigen::MatrixXd P = Q;
+    Eigen::MatrixXd P_1;
+    Eigen::MatrixXd P_err;
+    int iteration_num = 0;
+    double err = 10.0 * DLQR_TOLERANCE;
+    Eigen::MatrixXd::Index maxRow, maxCol;
+
+    while(err > DLQR_TOLERANCE && iteration_num < DLQR_MAX_ITERATION)
+    {
+        iteration_num++;
+        P_1 = Q + Ad.transpose() * P * Ad - Ad.transpose() * P * Bd * (R + Bd.transpose() * P * Bd).inverse() * Bd.transpose() * P * Ad;
+        Eigen::MatrixXd P_err = P_1 - P;
+        err = fabs(P_err.maxCoeff(&maxRow, &maxCol));
+        P = P_1;
+    }
+
+    if(iteration_num < DLQR_MAX_ITERATION)
+    {
+        K = (R + Bd.transpose() * P * Bd).inverse() * Bd.transpose() * P * Ad;
+        #ifdef DLQR_TEST_PRINT_K
+            std::cout << "----------------------------------------- K -----------------------------------------" << std::endl;
+            PrintMatrix(K);
+        #endif
+    }
+    else
+        std::cout << "DLQR Solve failed !!!" << std::endl;
+    
+    #ifdef DLQR_TEST_PRINT_ITERATION
+        std::cout << "----------------------------------------- ITERATION -----------------------------------------" << std::endl;
+        std::cout << iteration_num << std::endl;
+    #endif
+    #ifdef DLQR_TEST_PRINT_ULTI_ERROR
+        std::cout << "----------------------------------------- ULTI_ERROR -----------------------------------------" << std::endl;
+        std::cout << err << std::endl;
+    #endif
 }
