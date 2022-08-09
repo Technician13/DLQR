@@ -67,7 +67,6 @@ DLQR::~DLQR()
 {
     std::cout << "DLQR Die ..." << std::endl;
 }
-<<<<<<< HEAD
 
 void DLQR::DLQRInit()
 {
@@ -127,5 +126,3 @@ void DLQR::DLQRRun()
         std::cout << err << std::endl;
     #endif
 }
-=======
->>>>>>> 8000cc82430a92806299c1ddc731a485c034acfb
