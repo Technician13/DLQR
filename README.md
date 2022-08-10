@@ -7,7 +7,12 @@
 * Provide simple parameter type checking function & analysis of calculation results.   
 * Users can set parameter `SYSTEM_TYPE` in `CONTINUOUS` or `DISCRETE` according to the actual situation known by users. If users input the information of a continuous system, this component can trans that into discrete.     
 * Midpoint Euler method & Backward Euler method are used to trans system discretization if necessary.   
-* In `main` function, a loop is used to simulate the normal operation of a classical 1-dim position-velocity-acceleration system.    
+* In `main` function, a loop is used to simulate the normal operation of a classical 1-dim position-velocity-acceleration system.     
+
+$$\begin{bmatrix}p\\v\end{bmatrix}_{k+1} = 
+  \begin{bmatrix}1 & T\\0 & 1\end{bmatrix} \cdot \begin{bmatrix}p\\v\end{bmatrix}_{k} + 
+  \begin{bmatrix}\frac{1}{2} \cdot T^2 \\T\end{bmatrix} \cdot u_k$$      
+   
 * The test result is as the follow figure, as the time going, the state variable of the system converge to 0. the number of iterations is 20:     
 
 <div align=center>
