@@ -9,9 +9,9 @@
 * Midpoint Euler method & Backward Euler method are used to trans system discretization if necessary.   
 * In `main` function, a loop is used to simulate the normal operation of a classical 1-dim position-velocity-acceleration system.     
 
-$$\begin{bmatrix}p\\v\end{bmatrix}_{k+1} = 
-  \begin{bmatrix}1 & T\\0 & 1\end{bmatrix} \cdot \begin{bmatrix}p\\v\end{bmatrix}_{k} + 
-  \begin{bmatrix}\frac{1}{2} \cdot T^2 \\T\end{bmatrix} \cdot u_k$$      
+$$\begin{bmatrix}p_{k+1}\\\\v_{k+1}\end{bmatrix} =
+  \begin{bmatrix}1 & T\\\\0 & 1\end{bmatrix} \cdot \begin{bmatrix}p_{k}\\\\v_{k}\end{bmatrix} + 
+  \begin{bmatrix}\frac{1}{2} \cdot T^2 \\\\T\end{bmatrix} \cdot u_k$$      
    
 * The test result is as the follow figure, as the time going, the state variable of the system converge to 0. the number of iterations is 20:     
 
